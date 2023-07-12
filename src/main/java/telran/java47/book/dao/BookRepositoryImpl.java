@@ -27,8 +27,9 @@ public class BookRepositoryImpl implements BookRepository {
 
 	@Override
 	public Stream<Book> findByPublisherPublisherName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		TypedQuery<Book> query = em.createQuery("select b from Book b join b.publisher p where p.publisherName=?1", Book.class);
+		query.setParameter(1, name);
+		return query.getResultStream();
 	}
 
 	@Override
@@ -50,8 +51,10 @@ public class BookRepositoryImpl implements BookRepository {
 
 	@Override
 	public void deleteById(String isbn) {
-		// TODO Auto-generated method stub
-
+		Book book=em.find(Book.class, isbn);
+		if(book !=null) {
+			em.remove(book);
+		}
 	}
 
 }
